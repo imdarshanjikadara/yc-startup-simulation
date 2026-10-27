@@ -8,11 +8,12 @@ export default class Board extends React.Component {
   constructor(props) {
     super(props);
     const clients = this.getClients();
+    // All tasks start in the backlog swimlane
     this.state = {
       clients: {
-        backlog: clients.filter(client => !client.status || client.status === 'backlog'),
-        inProgress: clients.filter(client => client.status && client.status === 'in-progress'),
-        complete: clients.filter(client => client.status && client.status === 'complete'),
+        backlog: clients.map(client => ({ ...client, status: 'backlog' })),
+        inProgress: [],
+        complete: [],
       }
     }
     this.swimlanes = {
@@ -20,6 +21,49 @@ export default class Board extends React.Component {
       inProgress: React.createRef(),
       complete: React.createRef(),
     }
+  }
+  componentDidMount() {
+    this.drake = Dragula([
+      this.swimlanes.backlog.current,
+      this.swimlanes.inProgress.current,
+      this.swimlanes.complete.current,
+    ]);
+    this.drake.on('drop', (el, target, source, sibling) => this.updateClient(el, target, sibling));
+  }
+  componentWillUnmount() {
+    this.drake.destroy();
+  }
+  updateClient(el, target, sibling) {
+    // Revert Dragula's DOM move so React stays in control of rendering
+    this.drake.cancel(true);
+
+    const swimlaneStatuses = {
+      backlog: 'backlog',
+      inProgress: 'in-progress',
+      complete: 'complete',
+    };
+    const targetLane = Object.keys(this.swimlanes).find(lane => this.swimlanes[lane].current === target);
+    const clientId = el.dataset.id;
+    const siblingId = sibling ? sibling.dataset.id : null;
+
+    const allClients = [
+      ...this.state.clients.backlog,
+      ...this.state.clients.inProgress,
+      ...this.state.clients.complete,
+    ];
+    const movedClient = { ...allClients.find(client => client.id === clientId), status: swimlaneStatuses[targetLane] };
+
+    const clients = {};
+    Object.keys(this.state.clients).forEach(lane => {
+      clients[lane] = this.state.clients[lane].filter(client => client.id !== clientId);
+    });
+    const insertIndex = siblingId ? clients[targetLane].findIndex(client => client.id === siblingId) : -1;
+    if (insertIndex === -1) {
+      clients[targetLane].push(movedClient);
+    } else {
+      clients[targetLane].splice(insertIndex, 0, movedClient);
+    }
+    this.setState({ clients });
   }
   getClients() {
     return [

@@ -14,6 +14,8 @@ const db = new Database('./clients.db');
 
 // Don't forget to close connection when server gets terminated
 const closeDb = () => db.close();
+
+const validStatuses = ['backlog', 'in-progress', 'complete'];
 process.on('SIGTERM', closeDb);
 process.on('SIGINT', closeDb);
 
@@ -95,7 +97,7 @@ app.get('/api/v1/clients/:id', (req, res) => {
   const id = parseInt(req.params.id , 10);
   const { valid, messageObj } = validateId(id);
   if (!valid) {
-    res.status(400).send(messageObj);
+    return res.status(400).send(messageObj);
   }
   return res.status(200).send(db.prepare('select * from clients where id = ?').get(id));
 });
@@ -118,7 +120,7 @@ app.put('/api/v1/clients/:id', (req, res) => {
   const id = parseInt(req.params.id , 10);
   const { valid, messageObj } = validateId(id);
   if (!valid) {
-    res.status(400).send(messageObj);
+    return res.status(400).send(messageObj);
   }
 
   let { status, priority } = req.body;
@@ -127,8 +129,57 @@ app.put('/api/v1/clients/:id', (req, res) => {
 
   /* ---------- Update code below ----------*/
 
+  if (status !== undefined && !validStatuses.includes(status)) {
+    return res.status(400).send({
+      'message': 'Invalid status provided.',
+      'long_message': 'Status can only be one of the following: [backlog | in-progress | complete].',
+    });
+  }
 
+  if (priority !== undefined) {
+    priority = parseInt(priority, 10);
+    const { valid: validPriorityInput, messageObj: priorityMessageObj } = validatePriority(priority);
+    if (!validPriorityInput || priority < 1) {
+      return res.status(400).send(priorityMessageObj || {
+        'message': 'Invalid priority provided.',
+        'long_message': 'Priority can only be positive integer.',
+      });
+    }
+  }
 
+  const oldStatus = client.status;
+  const newStatus = status || oldStatus;
+
+  // Lanes ordered by current priority, with the moving client taken out
+  const lane = (laneStatus) => clients
+    .filter(c => c.status === laneStatus && c.id !== id)
+    .sort((a, b) => a.priority - b.priority);
+
+  const newLane = lane(newStatus);
+
+  // No priority given: keep the client where it is within its lane, or append to the bottom of a new lane
+  let insertIndex;
+  if (priority !== undefined) {
+    insertIndex = Math.min(priority - 1, newLane.length);
+  } else if (newStatus === oldStatus) {
+    insertIndex = Math.min(lane(oldStatus).filter(c => c.priority < client.priority).length, newLane.length);
+  } else {
+    insertIndex = newLane.length;
+  }
+  newLane.splice(insertIndex, 0, { ...client, status: newStatus });
+
+  // Renumber affected lanes from 1..n so priorities stay unique and contiguous per status
+  const updates = newLane.map((c, index) => ({ id: c.id, status: newStatus, priority: index + 1 }));
+  if (newStatus !== oldStatus) {
+    lane(oldStatus).forEach((c, index) => updates.push({ id: c.id, status: oldStatus, priority: index + 1 }));
+  }
+
+  const updateStatement = db.prepare('update clients set status = ?, priority = ? where id = ?');
+  db.transaction((rows) => {
+    rows.forEach(({ id, status, priority }) => updateStatement.run(status, priority, id));
+  })(updates);
+
+  clients = db.prepare('select * from clients').all();
   return res.status(200).send(clients);
 });
 

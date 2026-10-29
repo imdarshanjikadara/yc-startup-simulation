@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <rect width="760" height="420" fill="#ffffff"/>
+  <text x="20" y="30" font-size="16" font-weight="bold">Idea 2 · Card owners, comments &amp; activity feed</text>
+
+  <!-- Card detail -->
+  <rect x="20" y="50" width="420" height="350" rx="8" fill="#fafafa" stroke="#555"/>
+  <text x="36" y="78" font-weight="bold" font-size="15">Leuschke Group</text>
+  <rect x="330" y="62" width="94" height="24" rx="12" fill="#e8f0fb" stroke="#2a78d6"/>
+  <text x="377" y="79" text-anchor="middle" font-size="12" fill="#2a78d6">In progress</text>
+  <text x="36" y="110" fill="#555">Owner</text>
+  <circle cx="110" cy="105" r="11" fill="#1baf7a"/><text x="110" y="110" fill="#fff" text-anchor="middle" font-size="10">TC</text>
+  <text x="128" y="110">Tama C.</text>
+  <text x="220" y="110" fill="#555">Watchers</text>
+  <circle cx="290" cy="105" r="11" fill="#6250d6"/><circle cx="306" cy="105" r="11" fill="#eb6834"/>
+  <text x="326" y="110" fill="#2a78d6">+ Add</text>
+  <line x1="36" y1="126" x2="424" y2="126" stroke="#bbb"/>
+  <text x="36" y="150" font-weight="bold">Activity</text>
+  <text x="36" y="176" font-size="12">• Dawna moved Backlog → In progress · 2d ago</text>
+  <text x="36" y="200" font-size="12">• Dawna: "Waiting on customs docs from @Tama"</text>
+  <text x="36" y="224" font-size="12">• Priority changed 3 → 1 by Nadene · 1d ago</text>
+  <rect x="36" y="250" width="388" height="70" rx="4" fill="#fff" stroke="#bbb"/>
+  <text x="46" y="274" fill="#999">Write a comment… use @ to mention a teammate</text>
+  <rect x="334" y="334" width="90" height="32" rx="16" fill="#2a78d6"/>
+  <text x="379" y="355" fill="#fff" text-anchor="middle" font-weight="bold">Comment</text>
+
+  <!-- Notification -->
+  <rect x="460" y="50" width="280" height="160" rx="8" fill="#fafafa" stroke="#555"/>
+  <text x="476" y="78" font-weight="bold">🔔 Notifications</text>
+  <rect x="476" y="92" width="248" height="48" rx="4" fill="#fff" stroke="#2a78d6"/>
+  <text x="486" y="112" font-size="12">Dawna mentioned you on</text>
+  <text x="486" y="130" font-size="12" font-weight="bold">Leuschke Group</text>
+  <rect x="476" y="148" width="248" height="48" rx="4" fill="#fff" stroke="#bbb"/>
+  <text x="486" y="168" font-size="12">A card you watch was</text>
+  <text x="486" y="186" font-size="12">moved to Complete</text>
+
+  <rect x="460" y="226" width="280" height="174" rx="8" fill="#fff" stroke="#bbb" stroke-dasharray="4 3"/>
+  <text x="476" y="252" font-weight="bold" font-size="12">Data change</text>
+  <text x="476" y="276" font-size="12">card_change_history.user_id</text>
+  <text x="476" y="296" font-size="12">card.owner_id</text>
+  <text x="476" y="316" font-size="12">card_watcher(card_id, user_id)</text>
+  <text x="476" y="336" font-size="12">card_comment(card_id, user_id,</text>
+  <text x="476" y="354" font-size="12">  body, timestamp)</text>
+  <text x="476" y="382" font-size="11" fill="#555">→ lets us attribute every move to a user</text>
+</svg>

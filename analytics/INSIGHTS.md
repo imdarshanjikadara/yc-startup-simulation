@@ -29,8 +29,8 @@ sqlite3 shiptivity.db < answer.sql     # or run the raw SQL directly
 - Most of that came from new users: **43 of 100 users had their first login in June 2018**. Since September
   we've added roughly **one new user a month**, so growth has stalled.
 - After the release, DAU peaked in Jul–Aug (avg 12.9) and has **slipped about 20% to 10.2 in Jan 2019**.
-- Stickiness is low. About 80 users log in each month but only about 11 log in on a given day
-  (**DAU/MAU ≈ 14%**), which means a typical user visits about once a week.
+- Stickiness is low. About 78 users log in each month but only about 12 log in on a given day
+  (**DAU/MAU ≈ 15%**), which means a typical user visits about once a week.
 
 ## 2. Status changes by card
 
@@ -60,12 +60,12 @@ sqlite3 shiptivity.db < answer.sql     # or run the raw SQL directly
 ![Wireframe: daily digest](wireframes/1_stale_card_digest.svg)
 
 **Hypothesis**
-Users log in about once a week (DAU/MAU ≈ 14%) and most cards sit untouched for weeks. If we email a short daily
+Users log in about once a week (DAU/MAU ≈ 15%) and most cards sit untouched for weeks. If we email a short daily
 summary that shows what moved yesterday and which cards are stuck, and each card links straight to
 the board, users will have a reason to come back every day. Cards will also move faster.
 
 **Expected impact**
-- DAU/MAU goes from 14% to 20% or more, roughly +4 DAU on today's base.
+- DAU/MAU goes from 15% to 20% or more, roughly +4 DAU on today's base.
 - The share of In-progress cards that haven't been touched in over 14 days drops from 79% to under 50%.
 - Average time from In progress to Complete drops from 35 days to under 25.
 

@@ -19,7 +19,7 @@ The first commit imports the starter code provided by Forage, so each later comm
 ![Daily active users before and after the Kanban release](analytics/charts/daily_active_users.png)
 
 - **Daily active users rose 3.5x after the release** (3.35 → 11.79 average DAU), or **2.2x** on a like-for-like 30-day window either side of launch.
-- **Stickiness is low:** about 80 users log in each month but only about 11 on a given day (**DAU/MAU ≈ 14%**).
+- **Stickiness is low:** about 78 users log in each month but only about 12 on a given day (**DAU/MAU ≈ 15%**).
 - **The board is going stale:** 46 of 58 in-progress cards haven't moved in over 14 days, and the change history has no `user_id`, so card activity can't be tied to users.
 
 From this I proposed three features, in build order: card owners and activity feed (which also adds the missing tracking), a daily digest with stale-card nudges, and an invite-teammates loop. Full analysis, metrics and wireframes are in [`analytics/INSIGHTS.md`](analytics/INSIGHTS.md).

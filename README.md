@@ -2,7 +2,7 @@
 
 My work for Y Combinator's **"Working as a Software Engineer at a Start Up"** job simulation on Forage (completed October 2026).
 
-Shiptivity is a fictional logistics startup with a Kanban board for shipping requests. The simulation had three tasks across the stack: a frontend feature, the backend that persists it, and an analysis of how the release affected usage.
+Shiptivity is a fictional logistics startup with a Kanban board for shipping requests. The simulation had four tasks. This repo covers the three engineering ones: a frontend feature, the backend that persists it, and an analysis of how the release affected usage. (The fourth was writing application notes to YC startups.)
 
 | Folder | Task | Stack | My change |
 |---|---|---|---|
